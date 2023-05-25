@@ -3,10 +3,7 @@
 **/.github
 **/node_modules
 
-
 # Skip unnecessary files
 **/*.md
 
 # Exceptions
-!docker/entrypoint.sh
-!README.md
