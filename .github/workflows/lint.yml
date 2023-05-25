@@ -31,7 +31,7 @@ jobs:
         fetch-depth: 0 # Required to fetch version
     
     - name: Run Super Linter
-      uses: github/super-linter/slim@v5
+      uses: super-linter/super-linter/slim@v5
       env:
         IGNORE_GITIGNORED_FILES: true
         DEFAULT_BRANCH: main
@@ -42,8 +42,6 @@ jobs:
 
         VALIDATE_BASH: true
         VALIDATE_GITHUB_ACTIONS: true
-        VALIDATE_JAVASCRIPT_ES: true
-        VALIDATE_JSONC: true
+        VALIDATE_DOCKERFILE_HADOLINT: true
         VALIDATE_MARKDOWN: true
-        VALIDATE_TSX: true
-        VALIDATE_TYPESCRIPT_ES: true
+        VALIDATE_YAML: true
