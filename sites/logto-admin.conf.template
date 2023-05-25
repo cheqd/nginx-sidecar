@@ -12,7 +12,7 @@ server {
 
     # reverse proxy
     location / {
-        proxy_pass            http://${APP_NAME}:$(ADMIN_PORT);
+        proxy_pass            http://logto-app:${ADMIN_PORT};
         proxy_set_header Host $host;
         include               proxy.conf;
     }
