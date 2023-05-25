@@ -12,16 +12,16 @@ jobs:
     secrets: inherit
 
   call-build:
-    name: "Build & Test"
+    name: "Build"
     needs: call-lint
     uses: ./.github/workflows/build.yml
     secrets: inherit
 
-  call-deploy:
-    name: "Deploy"
+  call-staging:
+    name: "Staging"
     needs: call-build
     if: ${{ github.ref_name == 'develop' }}
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/staging.yml
     secrets: inherit
 
   call-release:
