@@ -11,6 +11,12 @@ RUN apk update && \
 # Set working directory
 WORKDIR /etc/nginx
 
+# Copy the default Nginx configuration template
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
+
+# Set the default environment variables for Nginx
+ENV NGINX_ENV=production
+
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
