@@ -4,6 +4,9 @@ on:
 defaults:
   run:
     shell: bash
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   release-node:
@@ -55,9 +58,7 @@ jobs:
     if: ${{ github.ref_name == 'main' }}
     env:
       IMAGE_NAME: registry.digitalocean.com/cheqd/creds-auth
-    environment: 
-      name: production
-      url: https://admin-auth.creds.xyz
+
 
     steps:
       - uses: actions/checkout@v3
