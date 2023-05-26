@@ -1,22 +1,22 @@
 server {
     listen      80;
-    listen      [::]:80;
     server_name ${ADMIN_ENDPOINT};
-
-    # security
-    include     common/security.conf;
-
-    # logging
-    access_log  /dev/stdout combined buffer=512k flush=1m;
-    error_log   /dev/stderr warn;
 
     # reverse proxy
     location / {
         proxy_pass            http://logto-app:${ADMIN_PORT};
-        proxy_set_header Host $host;
-        include               common/proxy.conf;
+        include               conf.d/proxy.conf;
     }
 
-    # additional config
-    include common/general.conf;
+    location = /favicon.ico {
+      log_not_found off;
+    }
+
+    location = /robots.txt {
+      log_not_found off;
+    }
+
+    location ~ /\.(?!well-known) {
+        deny all;
+    }
 }
