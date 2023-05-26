@@ -1,10 +1,10 @@
 server {
     listen      80;
-    server_name ${API_ENDPOINT};
+    server_name <API_ENDPOINT>;
 
     # reverse proxy
     location / {
-        proxy_pass            http://logto-app:${API_PORT};
+        proxy_pass            http://logto-app:<API_PORT>;
         include               conf.d/proxy.conf;
     }
 
