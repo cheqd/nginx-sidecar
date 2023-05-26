@@ -1,10 +1,10 @@
 server {
-    listen      80 reuseport;
-    listen      [::]:80 reuseport;
+    listen      80;
+    listen      [::]:80;
     server_name ${API_ENDPOINT};
 
     # security
-    include     security.conf;
+    include     common/security.conf;
 
     # logging
     access_log  /dev/stdout combined buffer=512k flush=1m;
@@ -14,17 +14,9 @@ server {
     location / {
         proxy_pass            http://logto-app:${API_PORT};
         proxy_set_header Host $host;
-        include               proxy.conf;
+        include               common/proxy.conf;
     }
 
     # additional config
-    include general.conf;
-}
-
-# subdomains redirect
-server {
-    listen      80;
-    listen      [::]:80;
-    server_name *.${API_ENDPOINT};
-    return      301 http://${API_ENDPOINT}$request_uri;
+    include common/general.conf;
 }

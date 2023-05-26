@@ -2,7 +2,7 @@
 ###       STAGE 1: Build custom Nginx runner      ###
 ###############################################################
 
-FROM nginx:alpine-slim
+FROM nginx:alpine-slim as runner
 
 # Install pre-requisites
 RUN apk update && \
@@ -11,33 +11,37 @@ RUN apk update && \
 # Set working directory
 WORKDIR /etc/nginx
 
-# Copy the default Nginx configuration template
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
+# Set shell to bash
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-# Set the default environment variables for Nginx
-ENV NGINX_ENV=production
+# Copy top-level Nginx configuration
+COPY nginx.conf ./nginx.conf
 
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
-COPY entrypoint.sh /usr/bin/entrypoint.sh
-RUN chmod +x /usr/bin/entrypoint.sh
+# Copy shared configurations
+COPY common/ ./common/
 
-RUN chown -R nginx:nginx /etc/nginx/nginx.conf.template && \
-    chown -R nginx:nginx /usr/bin/start.sh && \
-    chown -R nginx:nginx /var/cache/nginx && \
-    chown -R nginx:nginx /var/log/nginx && \
-    chown -R nginx:nginx /etc/nginx/conf.d
+# Copy site-level configurations
+COPY sites/ ./templates/
 
-RUN touch /etc/nginx/nginx.conf && \
-    chown -R nginx:nginx /etc/nginx/nginx.conf
-
+# Change ownership of the Nginx files/directories to the nginx user
 RUN touch /var/run/nginx.pid && \
-    chown -R nginx:nginx /var/run/nginx.pid
+    chown -R nginx:nginx /var/run/nginx.pid /var/cache/nginx /etc/nginx
+
+# Set environment variables
+ENV API_ENDPOINT=api.logto.dev
+ENV API_PORT=3001
+ENV ADMIN_ENDPOINT=admin.logto.dev
+ENV ADMIN_PORT=3002
+
+# Run envsubst to replace variables
+RUN envsubst '\$API_PORT \$API_ENDPOINT' < /etc/nginx/templates/logto-app.conf.template > /etc/nginx/conf.d/logto-app.conf && \
+    envsubst '\$ADMIN_PORT \$ADMIN_ENDPOINT' < /etc/nginx/templates/logto-admin.conf.template > /etc/nginx/conf.d/logto-admin.conf
 
 # Specify listener port
 EXPOSE ${PORT}
 
-# Set user & shell
+# Set user
 USER nginx
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-CMD ["/usr/bin/entrypoint.sh"]
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
