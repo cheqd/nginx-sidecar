@@ -7,7 +7,7 @@ defaults:
 
 jobs:
   deploy-staging:
-    name: "Deploy"
+    name: "Deploy image"
     runs-on: ubuntu-latest
     env: 
       IMAGE_NAME: ${{ github.repository }}
