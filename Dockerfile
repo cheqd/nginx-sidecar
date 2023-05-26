@@ -18,13 +18,14 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 COPY nginx.conf ./nginx.conf
 
 # Copy shared configurations
-COPY common/ ./common/
+COPY common/ ./conf.d/
 
 # Copy site-level configurations
 COPY sites/ ./templates/
 
 # Change ownership of the Nginx files/directories to the nginx user
 RUN touch /var/run/nginx.pid && \
+    mkdir -p /etc/nginx/sites-enabled && \
     chown -R nginx:nginx /var/run/nginx.pid /var/cache/nginx /etc/nginx
 
 # Set environment variables
@@ -34,11 +35,8 @@ ENV ADMIN_ENDPOINT=admin.logto.dev
 ENV ADMIN_PORT=3002
 
 # Run envsubst to replace variables
-RUN envsubst '\$API_PORT \$API_ENDPOINT' < /etc/nginx/templates/logto-app.conf.template > /etc/nginx/conf.d/logto-app.conf && \
-    envsubst '\$ADMIN_PORT \$ADMIN_ENDPOINT' < /etc/nginx/templates/logto-admin.conf.template > /etc/nginx/conf.d/logto-admin.conf
-
-# Specify listener port
-EXPOSE ${PORT}
+RUN envsubst '\$API_PORT \$API_ENDPOINT' < /etc/nginx/templates/logto-app.conf.template > /etc/nginx/sites-enabled/logto-app.conf && \
+    envsubst '\$ADMIN_PORT \$ADMIN_ENDPOINT' < /etc/nginx/templates/logto-admin.conf.template > /etc/nginx/sites-enabled/logto-admin.conf
 
 # Set user
 USER nginx
