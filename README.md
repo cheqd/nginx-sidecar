@@ -1,14 +1,24 @@
-# Default .github community repo for cheqd
+# Nginx sidecar for DigitalOcean App Platform
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/cheqd/.github?color=green&label=stable%20release&style=flat-square)](https://github.com/cheqd/.github/releases/latest) ![GitHub Release Date](https://img.shields.io/github/release-date/cheqd/.github?color=green&style=flat-square) [![GitHub license](https://img.shields.io/github/license/cheqd/.github?color=blue&style=flat-square)](https://github.com/cheqd/.github/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/cheqd/nginx?color=blue&style=flat-square)](https://github.com/cheqd/nginx/blob/main/LICENSE) [![GitHub contributors](https://img.shields.io/github/contributors/cheqd/nginx?label=contributors%20%E2%9D%A4%EF%B8%8F&style=flat-square)](https://github.com/cheqd/nginx/graphs/contributors)
 
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/cheqd/.github?include_prereleases&label=dev%20release&style=flat-square)](https://github.com/cheqd/.github/releases/) ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/cheqd/.github/latest?style=flat-square) [![GitHub contributors](https://img.shields.io/github/contributors/cheqd/.github?label=contributors%20%E2%9D%A4%EF%B8%8F&style=flat-square)](https://github.com/cheqd/.github/graphs/contributors)
-
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cheqd/.github/dispatch.yml?label=workflows&style=flat-square)](https://github.com/cheqd/.github/actions/workflows/dispatch.yml) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cheqd/.github/codeql.yml?label=CodeQL&style=flat-square)](https://github.com/cheqd/.github/actions/workflows/codeql.yml) ![GitHub repo size](https://img.shields.io/github/repo-size/cheqd/.github?style=flat-square)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cheqd/nginx/dispatch.yml?label=workflows&style=flat-square)](https://github.com/cheqd/nginx/actions/workflows/dispatch.yml) ![GitHub repo size](https://img.shields.io/github/repo-size/cheqd/nginx?style=flat-square)
 
 ## ℹ️ Overview
 
-Default template for cheqd repos
+A custom Nginx sidecar image for use on [DigitalOcean App Platform](https://docs.digitalocean.com/products/app-platform/). It is intended as a common base image that could then be modified to work across a variety of different deployments.
+
+## 🧑‍💻 Developer Guide
+
+Build the Docker image using:
+
+```bash
+docker build --target runner . -t nginx:local
+```
+
+`runner` is the build target stage.
+
+The start script is set to `entrypoint.sh`. In this instance, it's optimised for working with [LogTo](https://docs.logto.io/docs/tutorials/get-started/).
 
 ## 💬 Community
 
